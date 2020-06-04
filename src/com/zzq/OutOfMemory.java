@@ -10,7 +10,7 @@ public class OutOfMemory {
      * 使用如下参数运行JVM即会产生。
      * java.lang.OutOfMemoryError: Java heap space
      * JVM参数：
-     * -Xms10m -Xmx10m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./jvm.dump
+     * -Xms5m -Xmx5m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./jvm.dump
      * 使用-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./jvm.dump
      * 可以使代码在发生 java.lang.OutOfMemoryError: Java heap space时生成一份内存快照用于分析堆溢出的原因。
      *
@@ -31,9 +31,24 @@ public class OutOfMemory {
         }
     }
 
+    /**
+     * java.lang.OutOfMemoryError:GC over head limit exceeded
+     * gc了但是必须效果并不理想
+     */
+    public static void gcNotEffect(){
+        long[] longs = new long[100000];
+        System.gc();
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         // heapSpace();
-        unableToCreateThread();
+        //unableToCreateThread();
+        gcNotEffect();
     }
 
 
