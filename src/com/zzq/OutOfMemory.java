@@ -1,5 +1,7 @@
 package com.zzq;
 
+import java.util.LinkedList;
+import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -32,17 +34,31 @@ public class OutOfMemory {
     }
 
     /**
-     * java.lang.OutOfMemoryError:GC over head limit exceeded
-     * gc了但是必须效果并不理想
+     * java.lang.OutOfMemoryError:GC over head limit exceeded .此方法并不会抛出此异常。
+     * 这个异常很难复现。但是本方法可以产生一个频繁full gc的log。
+     * gc了但是必须效果并不理想，可以使用次参数。此异常并不会中断当前线程
+     * -Xms3m -Xmx3m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=./jvm.dump -Xloggc:./gc.log
      */
-    public static void gcNotEffect(){
-        long[] longs = new long[100000];
-        System.gc();
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    public static void gcNotEffect() {
+        Executor executor = new ThreadPoolExecutor(2, 2, 10000L, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
+        executor.execute(() -> {
+            long[] longs = new long[260000];
+            try {
+                Thread.sleep(10000);
+                long[] ref = longs;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        executor.execute(() -> {
+            LinkedList<Object> objects = new LinkedList<>();
+            for (int i = 0; i < 500000; i++) {
+                boolean add = objects.add(new Object());
+                System.gc();
+            }
+
+        });
+
     }
 
     public static void main(String[] args) {
