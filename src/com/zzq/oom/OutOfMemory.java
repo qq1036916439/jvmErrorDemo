@@ -1,4 +1,4 @@
-package com.zzq;
+package com.zzq.oom;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -78,10 +78,10 @@ public class OutOfMemory {
 
 
     public static void main(String[] args) {
-        //  heapSpace();
+        heapSpace();
         //unableToCreateThread();
-        // gcNotEffect();
-        directMemory();
+       // gcNotEffect();
+       // directMemory();
     }
 
 

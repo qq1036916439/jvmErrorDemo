@@ -1,4 +1,4 @@
-package com.zzq;
+package com.zzq.oom;
 
 /**
  * 演示栈溢出的代码
