@@ -19,6 +19,9 @@ public class oddEvenList {
         node1.next = node2.next;
         while (node1 != null && node2 != null) {
             node1.next = node2.next;
+            if (node1.next == null) {
+                break;
+            }
             node1 = node1.next;
             node2.next = node1.next;
             node2 = node2.next;
@@ -28,7 +31,7 @@ public class oddEvenList {
     }
 
     public static void main(String[] args) {
-        ListNode head = arrayToListNode(1, 2, 3, 4, 5, 6, 7,8);
+        ListNode head = arrayToListNode(1, 2, 3, 4, 5, 6, 7, 8);
         oddEvenList(head);
         printListNode(head);
     }
